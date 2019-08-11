@@ -20,7 +20,7 @@ CREATE TABLE profiles (
 );
 
 CREATE TABLE messages (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, -- Для оптимизации работы с лайками
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   from_user_id INT UNSIGNED NOT NULL,
   to_user_id INT UNSIGNED NOT NULL,
   body TEXT NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE media_types (
   name VARCHAR(255) NOT NULL UNIQUE
 );
 
---таблица лайков
+
 CREATE TABLE ranking (
   content_id INT NOT NULL,
   user_id INT NOT NULL,
@@ -75,12 +75,3 @@ CREATE TABLE ranking (
   created_at DATETIME DEFAULT NOW(),
   PRIMARY KEY (content_id, user_id, content_table)
 );
-
-	
--- Рекомендуемый стиль
--- https://www.sqlstyle.guide/ru/
-
--- Заполняем таблицы с учётом отношений 
--- на http://filldb.info
-
-
