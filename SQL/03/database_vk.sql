@@ -67,11 +67,17 @@ CREATE TABLE media_types (
 );
 
 
-CREATE TABLE ranking (
-  content_id INT NOT NULL,
-  user_id INT NOT NULL,
-  content_table VARCHAR(50) NOT NULL,
-  is_positive boolean NOT NULL,
-  created_at DATETIME DEFAULT NOW(),
-  PRIMARY KEY (content_id, user_id, content_table)
+CREATE TABLE likes (
+  id SERIAL PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  target_id INT UNSIGNED NOT NULL,
+  like_type_id INT UNSIGNED NOT NULL,
+  is_positive BOOLEAN NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE like_types (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL UNIQUE
 );
