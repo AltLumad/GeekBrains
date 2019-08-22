@@ -3,7 +3,7 @@
 Поля from, to и label содержат английские названия городов, 
 поле name — русское. 
 Выведите список рейсов flights с русскими названиями городов*/
-
+DROP DATABASE IF EXISTS airlogs;
 CREATE DATABASE airlogs;
 USE airlogs;
 
@@ -19,26 +19,38 @@ VALUE ('moscow','Москва'),('irkutsk','Иркутск'),
 
 CREATE TABLE flights (
 	id SERIAL PRIMARY KEY,
-	from VARCHAR(100) NOT NULL,
-	to VARCHAR(100) NOT NULL
+	`from` VARCHAR(100) NOT NULL,
+	`to` VARCHAR(100) NOT NULL
 );
+
+
 ALTER TABLE flights
 ADD CONSTRAINT fk_from
-FOREIGN KEY (from)
+FOREIGN KEY (`from`)
 REFERENCES cities (label)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
+
 
 ALTER TABLE flights
 ADD CONSTRAINT fk_to
-FOREIGN KEY (to)
+FOREIGN KEY (`to`)
 REFERENCES cities (label)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
-INSERT INTO flights(from, to)
+
+
+INSERT INTO flights(`from`, `to`)
 VALUE ('moscow','omsk'),('irkutsk','kazan'),
 	  ('irkutsk','moscow'),('omsk','irkutsk'),
 	  ('moscow','kazan'),('orsk','moscow');
 
+
+
+SELECT C.name AS `from`, C1.name as `to`
+FROM flights F
+INNER JOIN cities C ON C.label = F.`from`
+INNER JOIN cities C1 ON C1.label = F.`to`
+ORDER BY F.id
 

@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS products;
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) COMMENT 'Название',
-  desription TEXT COMMENT 'Описание',
+  description TEXT COMMENT 'Описание',
   price DECIMAL (11,2) COMMENT 'Цена',
   catalog_id INT UNSIGNED,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -83,8 +83,8 @@ CREATE TABLE orders_products (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) COMMENT = 'Состав заказа';
-INSERT INTO orders_products(order_id, total, total)
-VALUES (1, 1, 1), (1, 2, 2), (1, 3, 3), (1, 4, 4) 
+INSERT INTO orders_products(order_id, product_id, total)
+VALUES (1, 1, 1), (1, 2, 2), (1, 3, 3), (1, 4, 4), 
 	   (2, 1, 1), (3, 2, 2), (4, 3, 3), (5, 4, 4);
 	   
 DROP TABLE IF EXISTS discounts;
