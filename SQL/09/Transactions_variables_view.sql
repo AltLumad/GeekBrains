@@ -11,6 +11,8 @@ COMMIT;
 -----------------------------------------------------------------------------------
 /*2)Создайте представление, которое выводит название name товарной позиции из таблицы products 
 и соответствующее название каталога name из таблицы catalogs.*/
+USE shop;
+DROP TABLE IF EXISTS pretty_catalog;
 CREATE VIEW pretty_catalog (product_name, catalog_name) AS
 SELECT p.name, c.name FROM products p
 	LEFT JOIN catalogs c ON c.id = p.catalog_id; -- LEFT JOIN использован намеренно, на мой взгляд даже если продукт не имеет ссылки на каталог, он должен выводиться.
@@ -20,6 +22,8 @@ SELECT p.name, c.name FROM products p
 В ней размещены разряженые календарные записи за август 2018 года '2018-08-01', '2016-08-04', '2018-08-16' и 2018-08-17. 
 Составьте запрос, который выводит полный список дат за август, выставляя в соседнем поле значение 1, 
 если дата присутствует в исходном таблице и 0, если она отсутствует.*/
+
+DROP TABLE IF EXISTS test_table;
 CREATE TABLE test_table (created_at DATETIME);
 INSERT INTO test_table (created_at) 
 VALUES ('2018-08-01'), ('2018-08-04'), ('2018-08-16'), ('2018-08-17'), ('2018-08-21'), ('2018-08-24');
@@ -34,11 +38,11 @@ SELECT @begindate := @begindate + INTERVAL 1 DAY,
 FROM T
 WHERE @begindate < '2018-10-01'
 )
-SELECT * FROM T	   
+SELECT * FROM T;
 -----------------------------------------------------------------------------------
 
 /*4)(по желанию) Пусть имеется любая таблица с календарным полем created_at. 
 Создайте запрос, который удаляет устаревшие записи из таблицы, оставляя только 5 самых свежих записей.*/
-PREPARE delf FROM "DELETE FROM created_at ORDER BY created_at LIMIT ?";
-SET @lim := (SELECT COUNT(*) -5 FROM created_at);
+PREPARE delf FROM "DELETE FROM test_table ORDER BY created_at LIMIT ?";
+SET @lim := (SELECT COUNT(*) -5 FROM test_table);
 EXECUTE delf USING @lim;
