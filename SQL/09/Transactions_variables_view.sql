@@ -12,7 +12,7 @@ COMMIT;
 /*2)Создайте представление, которое выводит название name товарной позиции из таблицы products 
 и соответствующее название каталога name из таблицы catalogs.*/
 USE shop;
-DROP TABLE IF EXISTS pretty_catalog;
+DROP VIEW IF EXISTS pretty_catalog;
 CREATE VIEW pretty_catalog (product_name, catalog_name) AS
 SELECT p.name, c.name FROM products p
 	LEFT JOIN catalogs c ON c.id = p.catalog_id; -- LEFT JOIN использован намеренно, на мой взгляд даже если продукт не имеет ссылки на каталог, он должен выводиться.
