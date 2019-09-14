@@ -26,6 +26,7 @@ CREATE TABLE accounts (
 	password VARCHAR(50)
 );
 
+DROP VIEW IF EXISTS username;
 CREATE VIEW username(id, name) AS
 SELECT id, name FROM accounts;
 
