@@ -6,6 +6,8 @@ catalogs и products в таблицу logs помещается время и �
 
 
 --1--
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 CREATE TABLE logs (
  created_at DATETIME,
  table_name VARCHAR(25),
@@ -37,9 +39,10 @@ BEGIN
     CALL write_log(new.created_at, "catalogs", NEW.id, NEW.name);
 END//
 DELIMITER ;
-
+COMMIT;
 
 --2--
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET @iter := 1;
 WITH RECURSIVE T (id, username, birthday) AS 
@@ -53,3 +56,4 @@ WHERE @iter < 1000000
 )
 SELECT * FROM T;
 INSERT INTO user(name,birthday_at) SELECT username, birthday FROM T;
+COMMIT;
