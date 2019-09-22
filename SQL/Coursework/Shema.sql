@@ -150,7 +150,10 @@ DELIMITER //
 CREATE FUNCTION GetRate(currency1_ INT, currency2_ INT, curdate_ DATE)
 RETURNS NUMERIC(20, 4) READS SQL DATA
 BEGIN
-  	DECLARE res NUMERIC(20,4);
+    IF (currency1_ = currency2_) THEN
+        RETURN 1;
+    END IF;
+	DECLARE res NUMERIC(20,4);
   	SET res = 
   	    (SELECT rate 
   	     FROM currancy_date 
@@ -221,7 +224,7 @@ ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 CREATE INDEX transactions_opdate_idx ON transactions(opdate); -- Очевидно, что часто будет требоваться выборка за дату или период.
-CREATE INDEX transactions_payment_from_idx ON transactions(payment_from); -- Индекс требуется для выписке по счётуы
+CREATE INDEX transactions_payment_from_idx ON transactions(payment_from); -- Индекс требуется для выписки по счётуы
 /*---------------------------------------------------------------------------*/
 
 /*--------------------Аналитики, типы аналитик, значения аналитик------------------------------------------*/
