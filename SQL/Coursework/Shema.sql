@@ -221,6 +221,7 @@ ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 CREATE INDEX transactions_opdate_idx ON transactions(opdate); -- Очевидно, что часто будет требоваться выборка за дату или период.
+CREATE INDEX transactions_payment_from_idx ON transactions(payment_from); -- Индекс требуется для выписке по счётуы
 /*---------------------------------------------------------------------------*/
 
 /*--------------------Аналитики, типы аналитик, значения аналитик------------------------------------------*/
