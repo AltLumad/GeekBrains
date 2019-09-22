@@ -3,7 +3,6 @@
 
 общее текстовое описание БД и решаемых ею задач;
 создать ERDiagram для БД;
-скрипты наполнения БД данными;
 скрипты характерных выборок (включающие группировки, JOIN'ы, вложенные таблицы);
 представления (минимум 2);
 хранимые процедуры / триггеры;*/
@@ -221,7 +220,6 @@ REFERENCES accounts(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
-
 CREATE INDEX transactions_opdate_idx ON transactions(opdate); -- Очевидно, что часто будет требоваться выборка за дату или период.
 /*---------------------------------------------------------------------------*/
 
@@ -265,6 +263,25 @@ REFERENCES analytics(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 /*------------------------------------------------------------------------*/
+
+/*-----------PROCEDURES--------------------------------*/
+DELIMITER //
+CREATE PROCEDURE pretty_transaction_by_period(IN begindate DATE, IN enddate DATE)
+BEGIN
+	SELECT   AFrom.name from_account , ATo.name to_account
+           , T.ammount*GetRate(AFrom.currency_id, ATo.currency_id, T.opdate) ammount
+           , C.signs  currency_to
+    FROM transactions T 
+        LEFT JOIN accounts AFrom 
+            ON AFrom.id = T.payment_from
+        LEFT JOIN accounts ATo 
+            ON ATo.id = T.payment_to
+        LEFT JOIN currency C
+            ON C.id = ATo.currency_id
+    WHERE T.opdate BETWEEN begindate AND enddate
+END//
+DELIMITER ;
+
 
 /*------ VIEW------------------------*/
 /*-----Списсок транзакций за сегодня-------*/
