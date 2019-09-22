@@ -279,14 +279,14 @@ BEGIN
             ON ATo.id = T.payment_to
         LEFT JOIN currency C
             ON C.id = ATo.currency_id
-    WHERE T.opdate BETWEEN begindate AND enddate
+    WHERE T.opdate BETWEEN begindate AND enddate;
 END//
 DELIMITER ;
 
 
 /*------ VIEW------------------------*/
 /*-----Списсок транзакций за сегодня-------*/
-/*CREATE VIEW transactions_today (from_account, to_account, ammount, currency_from) AS
+CREATE VIEW transactions_today (from_account, to_account, ammount, currency_from) AS
     SELECT   AFrom.name, ATo.name
            , T.ammount*GetRate(AFrom.currency_id, ATo.currency_id, T.opdate)
            , C.signs  
@@ -297,7 +297,7 @@ DELIMITER ;
             ON ATo.id = T.payment_to
         LEFT JOIN currency C
             ON C.id = ATo.currency_id
-    WHERE CAST(T.opdate as DATE) = CAST(NOW() AS DATE);*/
+    WHERE CAST(T.opdate as DATE) = CAST(NOW() AS DATE);
 /*-----------------------------------------------------------------------------*/        
 
 	
