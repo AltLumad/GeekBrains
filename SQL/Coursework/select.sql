@@ -9,11 +9,10 @@ ORDER BY rate DESC
 LIMIT 1;
 
 /*----Выписка по всем счетам пользователя за текущий год*/
-SELECT T.* FROM transactions T
+SELECT A.Name as account, T.opdate , T.Ammount, A.code  FROM transactions T
   INNER JOIN accounts A ON A.id = T.payment_from
   INNER JOIN users U on U.id = A.owner_id
 Where A.owner_type_id = 1 
   AND U.id = 2 
   AND YEAR(opdate) = YEAR(NOW())
-ORDER BY opdate;
-
+ORDER BY A.Name, opdate;

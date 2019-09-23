@@ -1,11 +1,9 @@
-/*
-***Требования к курсовому проекту:
 
+/*
 общее текстовое описание БД и решаемых ею задач;
 создать ERDiagram для БД;
-скрипты характерных выборок (включающие группировки, JOIN'ы, вложенные таблицы);
 представления (минимум 2);
-хранимые процедуры / триггеры;*/
+*/
 DROP DATABASE IF EXISTS dba;
 CREATE DATABASE dba;
 USE dba;
@@ -286,21 +284,28 @@ BEGIN
 END//
 DELIMITER ;
 
+  
 
 /*------ VIEW------------------------*/
-/*-----Списсок транзакций за сегодня-------*/
-CREATE VIEW transactions_today (from_account, to_account, ammount, currency_from) AS
-    SELECT   AFrom.name, ATo.name
-           , T.ammount*GetRate(AFrom.currency_id, ATo.currency_id, T.opdate)
-           , C.signs  
-    FROM transactions T 
-        LEFT JOIN accounts AFrom 
-            ON AFrom.id = T.payment_from
-        LEFT JOIN accounts ATo 
-            ON ATo.id = T.payment_to
-        LEFT JOIN currency C
-            ON C.id = ATo.currency_id
-    WHERE CAST(T.opdate as DATE) = CAST(NOW() AS DATE);
+/*-----Изменение курса рубля к тугрикам по месяцам-------*/
+CREATE VIEW rate_rur_to_tgr (curmonth, avg_rate) AS
+SELECT CONCAT(CONVERT(MONTH(curdate), CHAR),'-',CONVERT(YEAR(curdate), CHAR)),
+    AVG(rate)
+FROM currancy_date
+WHERE currency1_id = 1
+  AND currency2_id = 10
+GROUP BY curdate
+ORDER BY curdate;
+
+/*-------Среднее значение аналитики Метрика Карапузикова по всем транзакциям, с группировкой по валютам--------------*/
+CREATE VIEW transactions_by_karapuzikov_analytics (curcode, allsum, avg_analytic_value) AS 
+SELECT C.code, sum(T.ammount), AVG(CONVERT(TA.analytic_value, INTEGER)) FROM transactions T 
+	INNER JOIN transactions_analytics TA ON TA.transaction_id = T.ID
+	INNER JOIN analytics A ON A.id = TA.analytic_id AND A.name = 'Метрика Карапузикова'
+	INNER JOIN account AC ON AC.id = A.from_account
+	INNER JOIN currency C ON C.id = AC.currency_id
+GROUP BY C.id
+ORDER BY curdate;
 /*-----------------------------------------------------------------------------*/        
 
 	
