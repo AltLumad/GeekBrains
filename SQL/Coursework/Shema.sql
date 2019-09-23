@@ -148,11 +148,11 @@ DELIMITER //
 CREATE FUNCTION GetRate(currency1_ INT, currency2_ INT, curdate_ DATE)
 RETURNS NUMERIC(20, 4) READS SQL DATA
 BEGIN
+    DECLARE res NUMERIC(20,4);
     IF (currency1_ = currency2_) THEN
         RETURN 1;
     END IF;
-	DECLARE res NUMERIC(20,4);
-  	SET res = 
+    SET res = 
   	    (SELECT rate 
   	     FROM currancy_date 
   	     WHERE currency1 = currency1_
@@ -291,7 +291,7 @@ DELIMITER ;
 CREATE VIEW rate_rur_to_tgr (curmonth, avg_rate) AS
 SELECT CONCAT(CONVERT(MONTH(curdate), CHAR),'-',CONVERT(YEAR(curdate), CHAR)),
     AVG(rate)
-FROM currancy_date
+FROM currency_date
 WHERE currency1_id = 1
   AND currency2_id = 10
 GROUP BY curdate
@@ -299,13 +299,15 @@ ORDER BY curdate;
 
 /*-------Среднее значение аналитики Метрика Карапузикова по всем транзакциям, с группировкой по валютам--------------*/
 CREATE VIEW transactions_by_karapuzikov_analytics (curcode, allsum, avg_analytic_value) AS 
-SELECT C.code, sum(T.ammount), AVG(CONVERT(TA.analytic_value, INTEGER)) FROM transactions T 
+SELECT C.code, sum(T.ammount)
+     , AVG(CAST(CONV(HEX(TA.analytic_value),16, 10) as UNSIGNED  INTEGER)/100000000) 
+FROM transactions T 
 	INNER JOIN transactions_analytics TA ON TA.transaction_id = T.ID
 	INNER JOIN analytics A ON A.id = TA.analytic_id AND A.name = 'Метрика Карапузикова'
-	INNER JOIN account AC ON AC.id = A.from_account
+	INNER JOIN accounts AC ON AC.id = T.payment_from
 	INNER JOIN currency C ON C.id = AC.currency_id
 GROUP BY C.id
-ORDER BY curdate;
+ORDER BY C.id;
 /*-----------------------------------------------------------------------------*/        
 
 	
