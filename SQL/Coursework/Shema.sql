@@ -4,9 +4,9 @@
 создать ERDiagram для БД;
 представления (минимум 2);
 */
-DROP DATABASE IF EXISTS dba;
-CREATE DATABASE dba;
-USE dba;
+DROP DATABASE IF EXISTS financial_accounting;
+CREATE DATABASE financial_accounting;
+USE financial_accounting;
 
 -- Пользователи----------------------------------------------
 CREATE TABLE users (
