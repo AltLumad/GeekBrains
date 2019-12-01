@@ -1,0 +1,10 @@
+__init__.cpython-37.pyc
+items.cpython-37.pyc
+pipelines.cpython-37.pyc
+settings.cpython-37.pyc
+hhparser.cpython-37.pyc
+sjparser.cpython-37.pyc
+.idea
+venv
+scrapy.cfg
+__pycache__
