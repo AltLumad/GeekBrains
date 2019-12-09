@@ -6,7 +6,12 @@ d = {}
 for i in m:
 	if i in d: d[i] += 1
 	else: d[i] = 1
-
 print(d)
+max = None
+for key in d:
+	if not max or d[max] < d[key]:
+		max = key
+
+print(max)
 	
 	
