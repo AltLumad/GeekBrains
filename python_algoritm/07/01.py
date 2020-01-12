@@ -11,11 +11,14 @@ ARR_SIZE = 25
 
 
 def bubble_sort(arr):
+    need_swap = False
     for i in range(ARR_SIZE):
         for j in range(ARR_SIZE - i - 1):
             if arr[j] < arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
-
+        need_swap = True
+        if not need_swap:
+            break
 
 array = [r.randint(-100, 100) for _ in range(ARR_SIZE)]
 
